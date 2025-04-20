@@ -20,25 +20,6 @@ export function Settings({
       <div className="my-4">
         <div className="flex p-1">
           <select
-            id="setting-distanceUnit"
-            className="h-8 dark:bg-slate-800"
-            value={settingsData.distanceUnit}
-            onChange={(e) =>
-              updateSettings({ distanceUnit: e.target.value as "km" | "miles" })
-            }
-          >
-            <option value="km">KM</option>
-            <option value="miles">Miles</option>
-          </select>
-          <label
-            className="flex-1 ml-2 flex items-center"
-            htmlFor="setting-distanceUnit"
-          >
-            {"Distance unit"}
-          </label>
-        </div>
-        <div className="flex p-1">
-          <select
             id="setting-theme"
             className="h-8 dark:bg-slate-800"
             value={settingsData.theme}

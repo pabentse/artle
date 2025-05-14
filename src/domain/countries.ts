@@ -1230,7 +1230,7 @@ export const countries = [
     latitude: 58.1467,
     longitude: 8.0055,
     attributes: ["Etsing"],
-  }
+  },
 ];
 
 export const countriesWithImage = countries.filter((c) =>

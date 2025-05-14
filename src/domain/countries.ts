@@ -1229,7 +1229,7 @@ export const countries = [
     year: 1998,
     latitude: 58.1467,
     longitude: 8.0055,
-    attributes: ["Etsing"],
+    attributes: ["Gratulerer"],
   },
 ];
 

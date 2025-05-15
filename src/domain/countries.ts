@@ -91,6 +91,7 @@ export const countryCodesWithImage = [
   "municip5126",
   "municip5127",
   "municip5128",
+  "municip9999",
 ];
 
 export interface Country {
@@ -1218,6 +1219,18 @@ export const countries = [
     longitude: 12.4534,
     attributes: ["Abstract Art", "Modernism"],
   },
+  {
+    code: "municip9999",
+    name: "Varsel",
+    artist: "Hans Bentsen",
+    location: "Kristiansand",
+    country: "Norway",
+    museum: "Kristiansand Kunsthall",
+    year: 1998,
+    latitude: 58.1467,
+    longitude: 8.0055,
+    attributes: ["Etsing"],
+  }
 ];
 
 export const countriesWithImage = countries.filter((c) =>

@@ -10,12 +10,7 @@ import { Settings } from "./components/panels/Settings";
 import { useSettings } from "./hooks/useSettings";
 import { Stats } from "./components/panels/Stats";
 import { Worldle } from "./components/Worldle";
-import {
-  HashRouter as Router,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { HashRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import { GameThree } from "./components/GameThree";
 import { ScoreProvider } from "./components/ScoreContext";
 import { MetaRoundProvider } from "./components/MetaRoundContext";
@@ -53,17 +48,9 @@ function App() {
               bodyClassName="font-bold text-center"
             />
             {i18n.resolvedLanguage === "no" ? (
-              <InfosFr
-                isOpen={infoOpen}
-                close={() => setInfoOpen(false)}
-                settingsData={settingsData}
-              />
+              <InfosFr isOpen={infoOpen} close={() => setInfoOpen(false)} settingsData={settingsData} />
             ) : (
-              <Infos
-                isOpen={infoOpen}
-                close={() => setInfoOpen(false)}
-                settingsData={settingsData}
-              />
+              <Infos isOpen={infoOpen} close={() => setInfoOpen(false)} settingsData={settingsData} />
             )}
             <Settings
               isOpen={settingsOpen}
@@ -71,36 +58,20 @@ function App() {
               settingsData={settingsData}
               updateSettings={updateSettings}
             />
-            <Stats
-              isOpen={statsOpen}
-              close={() => setStatsOpen(false)}
-              distanceUnit={settingsData.distanceUnit}
-            />
+            <Stats isOpen={statsOpen} close={() => setStatsOpen(false)} distanceUnit={settingsData.distanceUnit} />
             <div className="flex justify-center flex-auto dark:bg-slate-900 dark:text-slate-50">
               <div className="w-full max-w-lg flex flex-col">
                 <header className="border-b-2 px-3 border-gray-200 flex">
-                  <button
-                    className="mr-3 text-xl"
-                    type="button"
-                    onClick={() => setInfoOpen(true)}
-                  >
+                  <button className="mr-3 text-xl" type="button" onClick={() => setInfoOpen(true)}>
                     ❓
                   </button>
                   <h1 className="text-4xl font-bold uppercase tracking-wide text-center my-1 flex-auto">
                     ART<span className="text-green-600">L</span>E
                   </h1>
-                  <button
-                    className="ml-3 text-xl"
-                    type="button"
-                    onClick={() => setStatsOpen(true)}
-                  >
+                  <button className="ml-3 text-xl" type="button" onClick={() => setStatsOpen(true)}>
                     📈
                   </button>
-                  <button
-                    className="ml-3 text-xl"
-                    type="button"
-                    onClick={() => setSettingsOpen(true)}
-                  >
+                  <button className="ml-3 text-xl" type="button" onClick={() => setSettingsOpen(true)}>
                     ⚙️
                   </button>
                 </header>
@@ -117,12 +88,7 @@ function App() {
                 </footer>
                 <footer className="flex justify-center text-sm mt-8 mb-1">
                   ❤️ <Worldle />? -
-                  <a
-                    className="underline pl-1"
-                    href="https://ko-fi.com/artle"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a className="underline pl-1" href="https://ko-fi.com/artle" target="_blank" rel="noopener noreferrer">
                     {"Buy me a coffee!"}
                   </a>
                 </footer>

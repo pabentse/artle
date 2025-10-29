@@ -43,7 +43,12 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "prettier/prettier": "warn",
+      "@typescript-eslint/no-inferrable-types": "off",
+      "@typescript-eslint/no-empty-interface": "off"
+    }
   },
   "browserslist": {
     "production": [

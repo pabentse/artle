@@ -1,11 +1,5 @@
 import { DateTime } from "luxon";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import {
   countries,
@@ -44,10 +38,7 @@ interface GameProps {
   settingsData: SettingsData;
 }
 
-const usePersistedState = <T,>(
-  key: string,
-  defaultValue: T
-): [T, React.Dispatch<React.SetStateAction<T>>] => {
+const usePersistedState = <T,>(key: string, defaultValue: T): [T, React.Dispatch<React.SetStateAction<T>>] => {
   const [state, setState] = useState<T>(() => {
     try {
       const savedState = window.localStorage.getItem(key);
@@ -56,10 +47,7 @@ const usePersistedState = <T,>(
       }
     } catch (err) {
       // If the JSON is malformed or it's an empty document it will fall in this block
-      console.error(
-        `Error parsing state for key "${key}" from localstorage`,
-        err
-      );
+      console.error(`Error parsing state for key "${key}" from localstorage`, err);
     }
     return defaultValue; // If no valid data was found, return the default value
   });
@@ -98,11 +86,7 @@ function seededShuffle<T>(array: T[], rng: () => number): T[] {
   }
   return arr;
 }
-function getWeightedRandomYear(
-  correctYear: number,
-  years: number[],
-  rng: () => number
-): number {
+function getWeightedRandomYear(correctYear: number, years: number[], rng: () => number): number {
   // Calculate weights
   const weights = years.map((year) => 1 / (Math.abs(year - correctYear) + 1));
 
@@ -121,12 +105,7 @@ function getWeightedRandomYear(
   return years[years.length - 1]; // Fallback, shouldn't really happen
 }
 
-function generateDeterministicYearOptions(
-  correctYear: number,
-  dayKey: string,
-  countryCode: string,
-  minGapYears: number = 5
-): number[] {
+function generateDeterministicYearOptions(correctYear: number, dayKey: string, countryCode: string, minGapYears: number = 5): number[] {
   const seed = hashStringToSeed(`${dayKey}-${countryCode}-${correctYear}`);
   const rng = createRNG(seed);
 
@@ -142,9 +121,7 @@ function generateDeterministicYearOptions(
 
   // Select 3 distractors with gap constraint; relax gap if needed
   for (let k = 0; k < 3; k++) {
-    let candidates = uniqueYears.filter(
-      (y) => !chosen.includes(y) && Math.abs(y - correctYear) >= 1
-    );
+    let candidates = uniqueYears.filter((y) => !chosen.includes(y) && Math.abs(y - correctYear) >= 1);
     // Enforce gap between chosen distractors
     candidates = candidates.filter((y) => chosen.every((c) => Math.abs(c - y) >= gap));
 
@@ -194,10 +171,7 @@ export function GameTwo({ settingsData }: GameProps) {
   const countryInputRef = useRef<HTMLInputElement>(null);
   //const [currentRoundInTwo, setCurrentRoundInTwo] = useState(MAX_TRY_COUNT - 1);
   const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  const [currentRoundInTwo, setCurrentRoundInTwo] = usePersistedState<number>(
-    `currentRoundInTwo-${today}`,
-    MAX_TRY_COUNT
-  );
+  const [currentRoundInTwo, setCurrentRoundInTwo] = usePersistedState<number>(`currentRoundInTwo-${today}`, MAX_TRY_COUNT);
 
   useEffect(() => {
     // Reset the currentRoundInThree to MAX_TRY_COUNT when a new game round begins
@@ -211,16 +185,8 @@ export function GameTwo({ settingsData }: GameProps) {
   const [currentGuess, setCurrentGuess] = useState("");
   const [guesses, addGuess] = useGuesses(dayStringNew, "guesses_round2");
 
-  const [hideImageMode, setHideImageMode] = useMode(
-    "hideImageMode",
-    dayStringNew,
-    settingsData.noImageMode
-  );
-  const [rotationMode, setRotationMode] = useMode(
-    "rotationMode",
-    dayStringNew,
-    settingsData.rotationMode
-  );
+  const [hideImageMode, setHideImageMode] = useMode("hideImageMode", dayStringNew, settingsData.noImageMode);
+  const [rotationMode, setRotationMode] = useMode("rotationMode", dayStringNew, settingsData.rotationMode);
 
   useEffect(() => {
     const imageIndices: number[] = [5, 3, 0];
@@ -243,10 +209,7 @@ export function GameTwo({ settingsData }: GameProps) {
     1: 3,
     0: 0,
   };
-  const imageIndex =
-    roundToImageIndexMapping[
-      currentRoundInTwo as keyof typeof roundToImageIndexMapping
-    ];
+  const imageIndex = roundToImageIndexMapping[currentRoundInTwo as keyof typeof roundToImageIndexMapping];
   const image = `images/countries/${country.code.toLowerCase()}/vector0.png`;
   //const image = `images/countries/${country.code.toLowerCase()}/vector${imageIndex}.png?${new Date().getTime()}`;
 
@@ -272,15 +235,13 @@ export function GameTwo({ settingsData }: GameProps) {
     }
   }, [currentMetaRound, navigate]);
 
-  const roundOneEnded =
-    guesses.length === MAX_TRY_COUNT ||
-    guesses[guesses.length - 1]?.isCorrect === true;
+  const roundOneEnded = guesses.length === MAX_TRY_COUNT || guesses[guesses.length - 1]?.isCorrect === true;
   console.log("roundOneEnded value is:", roundOneEnded);
   const [countryFeedback, setCountryFeedback] = useState<string | null>(null);
   const [centuryFeedback, setCenturyFeedback] = useState<string | null>(null);
   const correctYear = getYear(country);
   console.log("Last guess:", guesses[guesses.length - 1]);
-  
+
   const getButtonStyle = (year: number) => {
     if (!roundOneEnded) {
       return "bg-opacity-0 hover:bg-gray-500"; // Transparent for the first round
@@ -313,8 +274,7 @@ export function GameTwo({ settingsData }: GameProps) {
         year: selectedYear,
         distance: 0, //placeholder value
         isCorrect: selectedYear === correctYear,
-        isCorrectCentury:
-          Math.floor(selectedYear / 100) === Math.floor(correctYear / 100),
+        isCorrectCentury: Math.floor(selectedYear / 100) === Math.floor(correctYear / 100),
         // For the other properties, you can set them accordingly or use placeholders
       };
 
@@ -341,15 +301,7 @@ export function GameTwo({ settingsData }: GameProps) {
         console.log("Guess is wrong");
       }
     },
-    [
-      correctYear,
-      setCurrentRoundInTwo,
-      guesses,
-      addGuess,
-      currentGuess,
-      setScore,
-      score,
-    ]
+    [correctYear, setCurrentRoundInTwo, guesses, addGuess, currentGuess, setScore, score]
   );
 
   useEffect(() => {
@@ -382,21 +334,13 @@ export function GameTwo({ settingsData }: GameProps) {
   return (
     <div className="flex-grow flex flex-col mx-2">
       <div className="flex flex-row justify-between">
-        <GuessRow
-          centuryFeedback={centuryFeedback}
-          countryFeedback={countryFeedback}
-          settingsData={settingsData}
-        />
+        <GuessRow centuryFeedback={centuryFeedback} countryFeedback={countryFeedback} settingsData={settingsData} />
       </div>
 
       <div className="my-1">
         <div className="my-1">
           {isModalOpen ? (
-            <Modal
-              active={isModalOpen}
-              image={image}
-              onClose={() => setIsModalOpen(false)}
-            />
+            <Modal active={isModalOpen} image={image} onClose={() => setIsModalOpen(false)} />
           ) : (
             <img
               className={`max-h-52 m-auto transition-transform duration-700 ease-in cursor-pointer`}
@@ -428,13 +372,7 @@ export function GameTwo({ settingsData }: GameProps) {
         <>
           {isExploding && (
             <div className="confetti-container">
-              <ConfettiExplosion
-                force={1}
-                duration={3500}
-                particleCount={120}
-                width={2000}
-                height={800}
-              />
+              <ConfettiExplosion force={1} duration={3500} particleCount={120} width={2000} height={800} />
             </div>
           )}
           <NextRound

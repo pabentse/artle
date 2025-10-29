@@ -213,7 +213,7 @@ export const countries = [
     location: "Florence",
     country: "Italy",
     museum: "Uffizi Gallery",
-    attributes: ["Renassiance"]
+    attributes: ["Renassiance"],
   },
   {
     code: "municip5049",
@@ -405,7 +405,7 @@ export const countries = [
     year: 1597,
     latitude: 41.9029,
     longitude: 12.4534,
-    attributes: ["Renassiance"]
+    attributes: ["Renassiance"],
   },
   {
     code: "municip5065",
@@ -669,7 +669,7 @@ export const countries = [
     year: 1598,
     latitude: 42.3314,
     longitude: -83.0458,
-    attributes: ["Baroque"]
+    attributes: ["Baroque"],
   },
   {
     code: "municip5087",

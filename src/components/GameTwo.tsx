@@ -31,6 +31,8 @@ import { GuessRow } from "./GuessRow";
 import ConfettiExplosion from "confetti-explosion-react";
 import { NextRound } from "./NextRound";
 import { ScoreProvider, useScore } from "./ScoreContext";
+import { useMetaRound } from "./MetaRoundContext";
+import { useNavigate } from "react-router-dom";
 
 function getDayStringNew() {
   return DateTime.now().toFormat("dd-MM-yyyy");
@@ -40,8 +42,6 @@ const MAX_TRY_COUNT = 1; //Max number of guesses
 
 interface GameProps {
   settingsData: SettingsData;
-  currentMetaRound: number;
-  setCurrentMetaRound: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const usePersistedState = <T,>(
@@ -81,6 +81,23 @@ function createRNG(seed: number) {
     return seed / m; // Normalize to [0, 1)
   };
 }
+function hashStringToSeed(str: string): number {
+  let hash = 2166136261; // FNV-1a base
+  for (let i = 0; i < str.length; i++) {
+    hash ^= str.charCodeAt(i);
+    hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+  }
+  // Ensure uint32
+  return hash >>> 0;
+}
+function seededShuffle<T>(array: T[], rng: () => number): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 function getWeightedRandomYear(
   correctYear: number,
   years: number[],
@@ -104,12 +121,71 @@ function getWeightedRandomYear(
   return years[years.length - 1]; // Fallback, shouldn't really happen
 }
 
+function generateDeterministicYearOptions(
+  correctYear: number,
+  dayKey: string,
+  countryCode: string,
+  minGapYears: number = 5
+): number[] {
+  const seed = hashStringToSeed(`${dayKey}-${countryCode}-${correctYear}`);
+  const rng = createRNG(seed);
+
+  // Build unique candidate years from dataset
+  const uniqueYearsSet = new Set<number>();
+  for (const c of countries) {
+    uniqueYearsSet.add(getYear(c));
+  }
+  const uniqueYears = Array.from(uniqueYearsSet).filter((y) => y !== correctYear);
+
+  const chosen: number[] = [];
+  let gap = minGapYears;
+
+  // Select 3 distractors with gap constraint; relax gap if needed
+  for (let k = 0; k < 3; k++) {
+    let candidates = uniqueYears.filter(
+      (y) => !chosen.includes(y) && Math.abs(y - correctYear) >= 1
+    );
+    // Enforce gap between chosen distractors
+    candidates = candidates.filter((y) => chosen.every((c) => Math.abs(c - y) >= gap));
+
+    // If no candidates satisfy current gap, progressively relax
+    let attempts = 0;
+    while (candidates.length === 0 && attempts < 10) {
+      gap = Math.max(1, gap - 1);
+      candidates = uniqueYears.filter((y) => !chosen.includes(y));
+      candidates = candidates.filter((y) => chosen.every((c) => Math.abs(c - y) >= gap));
+      attempts++;
+    }
+
+    if (candidates.length === 0) {
+      // Fallback to any remaining years
+      candidates = uniqueYears.filter((y) => !chosen.includes(y));
+    }
+
+    // Weighted pick favoring years closer to correctYear (but still respecting gap)
+    const weights = candidates.map((y) => 1 / (Math.abs(y - correctYear) + 1));
+    const total = weights.reduce((s, w) => s + w, 0);
+    const normalized = weights.map((w) => w / total);
+    const r = rng();
+    let acc = 0;
+    let picked = candidates[candidates.length - 1];
+    for (let i = 0; i < candidates.length; i++) {
+      acc += normalized[i];
+      if (r < acc) {
+        picked = candidates[i];
+        break;
+      }
+    }
+    chosen.push(picked);
+  }
+
+  const options = [correctYear, ...chosen];
+  return seededShuffle(options, rng);
+}
+
 export function GameTwo({ settingsData }: GameProps) {
-  //update the currentMetaRound to 2 using persistant state and setCurrentMetaRound function
-  const [currentMetaRound, setCurrentMetaRound] = usePersistedState<number>(
-    "currentMetaRound",
-    2
-  );
+  const { currentMetaRound } = useMetaRound();
+  const navigate = useNavigate();
 
   const { i18n } = useTranslation();
   const dayStringNew = useMemo(getDayStringNew, []);
@@ -133,10 +209,7 @@ export function GameTwo({ settingsData }: GameProps) {
   const [country, randomAngle, imageScale] = useCountry(dayStringNew);
 
   const [currentGuess, setCurrentGuess] = useState("");
-  const [guesses, addGuess, resetGuesses] = useGuesses(dayStringNew);
-  useEffect(() => {
-    resetGuesses();
-  }, [resetGuesses]);
+  const [guesses, addGuess] = useGuesses(dayStringNew, "guesses_round2");
 
   const [hideImageMode, setHideImageMode] = useMode(
     "hideImageMode",
@@ -190,52 +263,24 @@ export function GameTwo({ settingsData }: GameProps) {
     }
   }, [isExploding]);
 
+  // Gate access based on meta round
+  useEffect(() => {
+    if (currentMetaRound < 2) {
+      navigate("/");
+    } else if (currentMetaRound > 2) {
+      navigate(`/round${currentMetaRound}`);
+    }
+  }, [currentMetaRound, navigate]);
+
   const roundOneEnded =
     guesses.length === MAX_TRY_COUNT ||
-    //guesses[guesses.length - 1]?.distance === 0;
     guesses[guesses.length - 1]?.isCorrect === true;
   console.log("roundOneEnded value is:", roundOneEnded);
   const [countryFeedback, setCountryFeedback] = useState<string | null>(null);
   const [centuryFeedback, setCenturyFeedback] = useState<string | null>(null);
   const correctYear = getYear(country);
   console.log("Last guess:", guesses[guesses.length - 1]);
-
-  function getRandomYears(excludedYears: number[], count: number): number[] {
-    const randomYears = [];
-    while (randomYears.length < count) {
-      const randomCountry =
-        countries[Math.floor(Math.random() * countries.length)];
-      const randomYear = getYear(randomCountry);
-      if (!excludedYears.includes(randomYear)) {
-        randomYears.push(randomYear);
-      }
-    }
-    return randomYears;
-  }
-
-  const randomYears = getRandomYears([correctYear], 3);
-  function shuffleArray(array: any[]) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-  const rng = createRNG(new Date().getDate()); // Using the day of the month as the seed
-
-  // Assuming allYears is a list of all potential years
-
-  let allYears = shuffleArray([correctYear, ...randomYears]);
-
-  const alternatives = [];
-  for (let i = 0; i < 3; i++) {
-    // To get 3 alternatives
-    const year = getWeightedRandomYear(correctYear, allYears, rng);
-    alternatives.push(year);
-    // Remove the selected year from allYears to avoid repetition
-    allYears = allYears.filter((y) => y !== year);
-  }
+  
   const getButtonStyle = (year: number) => {
     if (!roundOneEnded) {
       return "bg-opacity-0 hover:bg-gray-500"; // Transparent for the first round
@@ -252,27 +297,12 @@ export function GameTwo({ settingsData }: GameProps) {
     }
   };
 
-  allYears.map((year, index) => <button key={index}>{year}</button>);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
-  function generateYearOptions(correctYear: number): number[] {
-    const yearOptions = new Set<number>();
-    yearOptions.add(correctYear); // add the correct year
-
-    while (yearOptions.size < 4) {
-      // we want 4 options
-      const randomCountry =
-        countries[Math.floor(Math.random() * countries.length)];
-      yearOptions.add(getYear(randomCountry));
-    }
-
-    return Array.from(yearOptions);
-  }
-  //const correctYear = getYear(guessedCountry);
   const yearOptions = useMemo(
-    () => shuffleArray(generateYearOptions(correctYear)),
-    [correctYear]
+    () => generateDeterministicYearOptions(correctYear, dayStringNew, country.code),
+    [correctYear, dayStringNew, country.code]
   );
   const handleYearGuess = useCallback(
     (selectedYear: number) => {
@@ -413,9 +443,6 @@ export function GameTwo({ settingsData }: GameProps) {
             settingsData={settingsData}
             hideImageMode={hideImageMode}
             rotationMode={rotationMode}
-            currentRound={currentRoundInTwo} // Assuming GameTwo.tsx represents round 2
-            currentMetaRound={currentMetaRound}
-            setCurrentMetaRound={setCurrentMetaRound}
           />
         </>
       )}

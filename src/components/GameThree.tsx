@@ -35,6 +35,8 @@ import { NextRound } from "./NextRound";
 import seedrandom from "seedrandom";
 import { get } from "http";
 import { ScoreProvider, useScore } from "./ScoreContext";
+import { useMetaRound } from "./MetaRoundContext";
+import { useNavigate } from "react-router-dom";
 
 function getDayString() {
   return DateTime.now().toFormat("yyyy-MM-dd");
@@ -46,8 +48,6 @@ function getDayStringNew() {
 
 interface GameProps {
   settingsData: SettingsData;
-  currentMetaRound: number;
-  setCurrentMetaRound: React.Dispatch<React.SetStateAction<number>>;
 }
 const seed = new Date().getDate(); // Using the day of the month as the seed
 const rng = seedrandom(seed.toString());
@@ -80,7 +80,8 @@ const usePersistedState = <T,>(
 };
 
 export function GameThree({ settingsData }: GameProps) {
-  const [currentMetaRound, setCurrentMetaRound] = useState(3); // Or whatever initial value you want
+  const { currentMetaRound } = useMetaRound();
+  const navigate = useNavigate();
   const { i18n } = useTranslation();
   const dayString = useMemo(getDayString, []);
   const dayStringNew = useMemo(getDayStringNew, []);
@@ -109,10 +110,10 @@ export function GameThree({ settingsData }: GameProps) {
   console.log("gameLocked in beginning", gameLocked); */
 
   const [country, randomAngle, imageScale] = useCountry(dayStringNew);
-  const [guesses, addGuess, resetGuesses] = useGuesses(dayStringNew);
-  useEffect(() => {
-    resetGuesses();
-  }, [resetGuesses]);
+  const [guesses, addGuess, resetGuesses] = useGuesses(
+    dayStringNew,
+    "guesses_round3"
+  );
 
   const correctAttributes = getAttributes(country);
   const [attributeOptions, setAttributeOptions] = useState<string[]>([]);
@@ -219,6 +220,13 @@ export function GameThree({ settingsData }: GameProps) {
       setGameLocked(true);
     }
   }, [currentRoundInThree]);
+
+  // Gate access based on meta round
+  useEffect(() => {
+    if (currentMetaRound < 3) {
+      navigate(currentMetaRound === 1 ? "/" : "/round2");
+    }
+  }, [currentMetaRound, navigate]);
 
   // Using usePersistedState for isModalOpen to persist its state across sessions for the same day
   const [isModalOpen, setIsModalOpen] = usePersistedState<boolean>(

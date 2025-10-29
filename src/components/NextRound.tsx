@@ -10,16 +10,12 @@ import { Guess } from "../domain/guess";
 import React from "react";
 import { SettingsData } from "../hooks/useSettings";
 import { Link } from "react-router-dom";
-import { useGuesses } from "../hooks/useGuesses";
 import { ShareProps } from "./Share";
+import { useMetaRound } from "./MetaRoundContext";
 
 const START_DATE = DateTime.fromISO("2023-02-24");
 
-interface NextRoundProps extends ShareProps {
-  currentRound: number;
-  currentMetaRound: number;
-  setCurrentMetaRound: React.Dispatch<React.SetStateAction<number>>;
-}
+interface NextRoundProps extends ShareProps {}
 
 export function NextRound({
   guesses,
@@ -27,13 +23,10 @@ export function NextRound({
   settingsData,
   hideImageMode,
   rotationMode,
-  currentRound,
-  currentMetaRound,
 }: NextRoundProps) {
   const { theme } = settingsData;
 
-  // Instantiate the useGuesses hook at the top of the component
-  const [, , resetGuesses] = useGuesses(dayString);
+  const { currentMetaRound, setCurrentMetaRound } = useMetaRound();
 
   let nextRoundLink = "/round2";
   let buttonText = "Go to round 2!";
@@ -41,10 +34,9 @@ export function NextRound({
   const nextRoundText = useMemo(() => {
     const guessCount =
       guesses[guesses.length - 1]?.distance === 0 ? guesses.length : "X";
+    const parsedDay = DateTime.fromFormat(dayString, "dd-MM-yyyy");
     const dayCount = Math.floor(
-      Interval.fromDateTimes(START_DATE, DateTime.fromISO(dayString)).length(
-        "day"
-      )
+      Interval.fromDateTimes(START_DATE, parsedDay).length("day")
     );
     const difficultyModifierEmoji = hideImageMode
       ? " "
@@ -68,18 +60,14 @@ export function NextRound({
     nextRoundLink = "/round3";
     buttonText = "Go to round 3!";
   }
-  if (currentMetaRound === 3) {
-    nextRoundLink = "/round4";
-    buttonText = "Go to round 4!";
-  }
 
   return (
     <Link to={nextRoundLink}>
       <button
         className="border-2 px-4 uppercase bg-blue-600 hover:bg-blue-400 active:bg-blue-700 text-white w-full"
         onClick={() => {
-          // Reset state
-          resetGuesses();
+          // Advance to the next meta round
+          setCurrentMetaRound(currentMetaRound + 1);
         }}
       >
         {buttonText}

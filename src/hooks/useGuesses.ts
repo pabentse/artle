@@ -2,27 +2,28 @@ import { useCallback, useState } from "react";
 import { Guess, loadAllGuesses, saveGuesses } from "../domain/guess";
 
 export function useGuesses(
-  dayString: string
+  dayString: string,
+  storageKey: string = "guesses_round1"
 ): [Guess[], (guess: Guess) => void, () => void] {
   const [guesses, setGuesses] = useState<Guess[]>(
-    loadAllGuesses()[dayString] ?? []
+    loadAllGuesses(storageKey)[dayString] ?? []
   );
 
   const resetGuesses = useCallback(() => {
     setGuesses([]);
-    saveGuesses(dayString, []); // This will clear the entry in local storage
-  }, [dayString]);
+    saveGuesses(dayString, [], storageKey); // Clear this round's entry
+  }, [dayString, storageKey]);
 
   const addGuess = useCallback(
     (newGuess: Guess) => {
       const newGuesses = [...guesses, newGuess];
 
       setGuesses(newGuesses);
-      saveGuesses(dayString, newGuesses);
+      saveGuesses(dayString, newGuesses, storageKey);
 
       console.log("Inside useGuesses, updated guesses:", newGuesses);
     },
-    [dayString, guesses]
+    [dayString, guesses, storageKey]
   );
 
   return [guesses, addGuess, resetGuesses];

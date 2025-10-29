@@ -12,15 +12,19 @@ export interface Guess {
   attribute?: string;
 }
 
-export function loadAllGuesses(): Record<string, Guess[]> {
-  const storedGuesses = localStorage.getItem("guesses");
+export function loadAllGuesses(storageKey: string = "guesses_round1"): Record<string, Guess[]> {
+  const storedGuesses = localStorage.getItem(storageKey);
   return storedGuesses != null ? JSON.parse(storedGuesses) : {};
 }
 
-export function saveGuesses(dayStringNew: string, guesses: Guess[]): void {
-  const allGuesses = loadAllGuesses();
+export function saveGuesses(
+  dayStringNew: string,
+  guesses: Guess[],
+  storageKey: string = "guesses_round1"
+): void {
+  const allGuesses = loadAllGuesses(storageKey);
   localStorage.setItem(
-    "guesses",
+    storageKey,
     JSON.stringify({
       ...allGuesses,
       [dayStringNew]: guesses,

@@ -117,7 +117,7 @@ export const countries = [
     location: "Paris",
     country: "France",
     museum: "Musée du Louvre",
-    attributes: ["Renaissance", "High Renaissance"],
+    attributes: ["Renaissance"],
   },
   {
     code: "municip5045",
@@ -213,7 +213,7 @@ export const countries = [
     location: "Florence",
     country: "Italy",
     museum: "Uffizi Gallery",
-    attributes: ["Early Renaissance", "Italian Renaissance"],
+    attributes: ["Renassiance"]
   },
   {
     code: "municip5049",
@@ -237,7 +237,7 @@ export const countries = [
     location: "Vatican City",
     country: "Italy",
     museum: "Sistine Chapel",
-    attributes: ["High Renaissance", "Italian Renaissance"],
+    attributes: ["Renassiance"],
   },
   {
     code: "municip5051",
@@ -357,7 +357,7 @@ export const countries = [
     year: 1511,
     latitude: 41.9029,
     longitude: 12.4534,
-    attributes: ["High Renaissance", "Italian Renaissance"],
+    attributes: ["Renassiance"],
   },
   {
     code: "municip5061",
@@ -369,7 +369,7 @@ export const countries = [
     year: 1499,
     latitude: 41.9029,
     longitude: 12.4534,
-    attributes: ["High Renaissance", "Italian Renaissance"],
+    attributes: ["Renassiance"],
   },
   {
     code: "municip5062",
@@ -405,7 +405,7 @@ export const countries = [
     year: 1597,
     latitude: 41.9029,
     longitude: 12.4534,
-    attributes: ["Baroque", "Italian Renaissance"],
+    attributes: ["Renassiance"]
   },
   {
     code: "municip5065",
@@ -669,14 +669,7 @@ export const countries = [
     year: 1598,
     latitude: 42.3314,
     longitude: -83.0458,
-    attributes: [
-      "Baroque",
-      "Italian Renaissance",
-      "Renassiance",
-      "Tenebrism",
-      "Early Renaissance",
-      "High Renaissance",
-    ],
+    attributes: ["Baroque"]
   },
   {
     code: "municip5087",
@@ -724,7 +717,7 @@ export const countries = [
     year: 1304,
     latitude: 45.4064,
     longitude: 11.8768,
-    attributes: ["Proto-Renaissance", "Italian Renaissance"],
+    attributes: ["Renaissance", "Italian Renaissance"],
   },
   {
     code: "municip5091",
@@ -1108,12 +1101,7 @@ export const countries = [
     year: 1990,
     latitude: 35.6762,
     longitude: 139.6503,
-    attributes: [
-      "Conceptual Art",
-      "Feminist Art",
-      "Contemporary Art",
-      "Modernism",
-    ],
+    attributes: ["Conceptual Art", "Feminist Art", "Contemporary Art", "Modernism"],
   },
   //next is mao by andy warhol
   {
@@ -1152,7 +1140,7 @@ export const countries = [
     year: 1490,
     latitude: 59.9343,
     longitude: 30.3351,
-    attributes: ["High Renaissance"],
+    attributes: ["Renaissance"],
   },
   //next is The Farm by Joan Miro
   {
@@ -1218,23 +1206,9 @@ export const countries = [
     longitude: 12.4534,
     attributes: ["Abstract Art", "Modernism"],
   },
-  {
-    code: "municip9999",
-    name: "Varsel",
-    artist: "Hans Bentsen",
-    location: "Kristiansand",
-    country: "Norway",
-    museum: "Kristiansand Kunsthall",
-    year: 1998,
-    latitude: 58.1467,
-    longitude: 8.0055,
-    attributes: ["Gratulerer"],
-  },
 ];
 
-export const countriesWithImage = countries.filter((c) =>
-  countryCodesWithImage.includes(c.code.toLowerCase())
-);
+export const countriesWithImage = countries.filter((c) => countryCodesWithImage.includes(c.code.toLowerCase()));
 
 export function getCountryName(language: string, country: Country) {
   return country.name;

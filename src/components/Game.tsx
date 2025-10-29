@@ -43,8 +43,6 @@ const MAX_TRY_COUNT = 3; //Max number of guesses
 
 interface GameProps {
   settingsData: SettingsData;
-  currentMetaRound: number;
-  setCurrentMetaRound: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const usePersistedState = <T,>(
@@ -91,15 +89,10 @@ export function Game({ settingsData }: GameProps) {
     MAX_TRY_COUNT - 1
   );
 
-  const [currentMetaRound, setCurrentMetaRound] = usePersistedState<number>(
-    `currentMetaRound-${today}`, // Make sure this is unique and includes the date
-    1 // Default value if no persisted state is found
-  );
+  const { currentMetaRound, setCurrentMetaRound } = useMetaRound();
 
   useEffect(() => {
-    // If the currentMetaRound is greater than 1, redirect to the corresponding round
     if (currentMetaRound > 1) {
-      //console.log("Redirecting to round", currentMetaRound);
       navigate(`/round${currentMetaRound}`);
     }
   }, [currentMetaRound, navigate]);
@@ -108,32 +101,7 @@ export function Game({ settingsData }: GameProps) {
 
   const [currentGuess, setCurrentGuess] = useState("");
 
-  const [guesses, setGuesses] = useState<Guess[]>([]);
-
-  useEffect(() => {
-    const storedGuesses = localStorage.getItem("guesses");
-    console.log("Loaded guesses from storage:", storedGuesses); // Debugging line 1
-    const allGuesses = storedGuesses ? JSON.parse(storedGuesses) : {};
-    console.log("Parsed guesses for all days:", allGuesses); // Debugging line 2
-    const todayGuesses = allGuesses[dayStringNew] || [];
-    console.log(`Parsed guesses for ${dayStringNew}:`, todayGuesses); // Debugging line 3
-    setGuesses(todayGuesses);
-  }, [dayStringNew]); // This useEffect depends on dayStringNew, so it runs when dayStringNew changes
-
-  const addGuess = useCallback(
-    (newGuess: Guess) => {
-      setGuesses((prevGuesses) => {
-        const updatedGuesses = [...prevGuesses, newGuess];
-        // After updating the local state, save the new list of guesses to localStorage
-        const storedGuesses = localStorage.getItem("guesses");
-        const allGuesses = storedGuesses ? JSON.parse(storedGuesses) : {};
-        allGuesses[dayStringNew] = updatedGuesses; // Make sure dayStringNew has the correct format
-        localStorage.setItem("guesses", JSON.stringify(allGuesses));
-        return updatedGuesses;
-      });
-    },
-    [dayStringNew]
-  ); // Ensuring dayStringNew is used correctly here
+  const [guesses, addGuess] = useGuesses(dayStringNew, "guesses_round1");
 
   const [hideImageMode, setHideImageMode] = useMode(
     "hideImageMode",
@@ -159,10 +127,6 @@ export function Game({ settingsData }: GameProps) {
     `isModalOpen-${today}`,
     true // Default to true, can be set to false based on your game's logic
   );
-
-  useEffect(() => {
-    saveGuesses(dayStringNew, guesses);
-  }, [guesses, dayStringNew]);
 
   // assuming currentRound is of type number
   const roundToImageIndexMapping: { [key in number]: number } = {
@@ -363,9 +327,6 @@ export function Game({ settingsData }: GameProps) {
                 settingsData={settingsData}
                 hideImageMode={hideImageMode}
                 rotationMode={rotationMode}
-                currentRound={1} // Assuming Game.tsx represents round 1
-                currentMetaRound={currentMetaRound}
-                setCurrentMetaRound={setCurrentMetaRound}
               />
             }
             <a

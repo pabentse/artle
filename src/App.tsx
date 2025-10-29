@@ -29,7 +29,7 @@ function App() {
 
   const [settingsData, updateSettings] = useSettings();
 
-  const [currentMetaRound, setCurrentMetaRound] = useState(1);
+  // Meta round is provided via MetaRoundProvider; no local state here
 
   useEffect(() => {
     if (settingsData.theme === "dark") {
@@ -105,36 +105,9 @@ function App() {
                   </button>
                 </header>
                 <Routes>
-                  <Route
-                    path="/"
-                    element={
-                      <Game
-                        settingsData={settingsData}
-                        currentMetaRound={currentMetaRound}
-                        setCurrentMetaRound={setCurrentMetaRound}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/round2"
-                    element={
-                      <GameTwo
-                        settingsData={settingsData}
-                        currentMetaRound={currentMetaRound}
-                        setCurrentMetaRound={setCurrentMetaRound}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/round3"
-                    element={
-                      <GameThree
-                        settingsData={settingsData}
-                        currentMetaRound={currentMetaRound}
-                        setCurrentMetaRound={setCurrentMetaRound}
-                      />
-                    }
-                  />
+                  <Route path="/" element={<Game settingsData={settingsData} />} />
+                  <Route path="/round2" element={<GameTwo settingsData={settingsData} />} />
+                  <Route path="/round3" element={<GameThree settingsData={settingsData} />} />
                 </Routes>
                 <footer className="flex justify-center text-sm mt-8 mb-1">
                   <a>{""}</a>

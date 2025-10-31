@@ -261,6 +261,24 @@ export function GameThree({ settingsData }: GameProps) {
     GuessedAttribute[]
   >([]);
 
+  // Rehydrate round 3 selection on reload so UI shows chosen option and correctness
+  useEffect(() => {
+    const storageKey = `round3_attributes_${dayStringNew}`;
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved) as GuessedAttribute[];
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setGuessedAttributes(parsed);
+          setcurrentRoundInThree(0);
+          setGameLocked(true);
+        }
+      } catch {
+        // ignore
+      }
+    }
+  }, [dayStringNew, setcurrentRoundInThree]);
+
   const image = `images/countries/${country.code.toLowerCase()}/vector0.png`;
 
   const { score, setScore } = useScore(); // Get the score from the context (global score)
@@ -299,10 +317,17 @@ export function GameThree({ settingsData }: GameProps) {
       setScore(score + 1); // Increase the score by 1
     }
 
-    setGuessedAttributes([
+    const next = [
       ...guessedAttributes,
       { attribute: guessedAttribute, isCorrect },
-    ]);
+    ];
+    setGuessedAttributes(next);
+    try {
+      localStorage.setItem(
+        `round3_attributes_${dayStringNew}`,
+        JSON.stringify(next)
+      );
+    } catch {}
 
     setcurrentRoundInThree(currentRoundInThree - 1);
   };

@@ -86,26 +86,27 @@ function seededShuffle<T>(array: T[], rng: () => number): T[] {
   }
   return arr;
 }
+// kept for potential future use
 function getWeightedRandomYear(correctYear: number, years: number[], rng: () => number): number {
-  // Calculate weights
   const weights = years.map((year) => 1 / (Math.abs(year - correctYear) + 1));
-
-  // Normalize weights
   const totalWeight = weights.reduce((acc, weight) => acc + weight, 0);
   const normalizedWeights = weights.map((weight) => weight / totalWeight);
-
-  // Weighted random selection
   const rand = rng();
   let sum = 0;
   for (let i = 0; i < normalizedWeights.length; i++) {
     sum += normalizedWeights[i];
     if (rand < sum) return years[i];
   }
-
-  return years[years.length - 1]; // Fallback, shouldn't really happen
+  return years[years.length - 1];
 }
 
-function generateDeterministicYearOptions(correctYear: number, dayKey: string, countryCode: string, minGapYears: number = 5): number[] {
+function getMinGapForYear(correctYear: number): number {
+  if (correctYear < 1800) return 15;
+  if (correctYear < 1900) return 6;
+  return 3;
+}
+
+function generateDeterministicYearOptions(correctYear: number, dayKey: string, countryCode: string): number[] {
   const seed = hashStringToSeed(`${dayKey}-${countryCode}-${correctYear}`);
   const rng = createRNG(seed);
 
@@ -114,46 +115,29 @@ function generateDeterministicYearOptions(correctYear: number, dayKey: string, c
   for (const c of countries) {
     uniqueYearsSet.add(getYear(c));
   }
-  const uniqueYears = Array.from(uniqueYearsSet).filter((y) => y !== correctYear);
+  const baseGap = getMinGapForYear(correctYear);
+  const baseCandidates = Array.from(uniqueYearsSet).filter((y) => Math.abs(y - correctYear) >= baseGap);
+
+  // Deterministic shuffle of candidates
+  const shuffled = seededShuffle(baseCandidates, rng);
 
   const chosen: number[] = [];
-  let gap = minGapYears;
-
-  // Select 3 distractors with gap constraint; relax gap if needed
-  for (let k = 0; k < 3; k++) {
-    let candidates = uniqueYears.filter((y) => !chosen.includes(y) && Math.abs(y - correctYear) >= 1);
-    // Enforce gap between chosen distractors
-    candidates = candidates.filter((y) => chosen.every((c) => Math.abs(c - y) >= gap));
-
-    // If no candidates satisfy current gap, progressively relax
-    let attempts = 0;
-    while (candidates.length === 0 && attempts < 10) {
-      gap = Math.max(1, gap - 1);
-      candidates = uniqueYears.filter((y) => !chosen.includes(y));
-      candidates = candidates.filter((y) => chosen.every((c) => Math.abs(c - y) >= gap));
-      attempts++;
+  for (const y of shuffled) {
+    if (chosen.length >= 3) break;
+    if (chosen.every((c) => Math.abs(c - y) >= baseGap)) {
+      chosen.push(y);
     }
+  }
 
-    if (candidates.length === 0) {
-      // Fallback to any remaining years
-      candidates = uniqueYears.filter((y) => !chosen.includes(y));
-    }
-
-    // Weighted pick favoring years closer to correctYear (but still respecting gap)
-    const weights = candidates.map((y) => 1 / (Math.abs(y - correctYear) + 1));
-    const total = weights.reduce((s, w) => s + w, 0);
-    const normalized = weights.map((w) => w / total);
-    const r = rng();
-    let acc = 0;
-    let picked = candidates[candidates.length - 1];
-    for (let i = 0; i < candidates.length; i++) {
-      acc += normalized[i];
-      if (r < acc) {
-        picked = candidates[i];
-        break;
+  // If still not enough (highly unlikely), pad using farthest available while keeping pairwise gap
+  if (chosen.length < 3) {
+    const byDistance = [...baseCandidates].sort((a, b) => Math.abs(b - correctYear) - Math.abs(a - correctYear));
+    for (const y of byDistance) {
+      if (chosen.length >= 3) break;
+      if (!chosen.includes(y) && chosen.every((c) => Math.abs(c - y) >= baseGap)) {
+        chosen.push(y);
       }
     }
-    chosen.push(picked);
   }
 
   const options = [correctYear, ...chosen];

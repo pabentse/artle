@@ -329,18 +329,6 @@ export function Game({ settingsData }: GameProps) {
                 rotationMode={rotationMode}
               />
             }
-            <a
-              className="underline w-full text-center block mt-4"
-              href={`https://www.google.com/maps?q=${getMusemName(
-                i18n.resolvedLanguage,
-                country
-              )},%20${getCityName(i18n.resolvedLanguage, country)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ fontSize: "11px" }}
-            >
-              {"Show on Google Maps"}
-            </a>
           </>
         ) : (
           <form onSubmit={handleSubmit}>

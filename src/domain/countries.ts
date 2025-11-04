@@ -717,7 +717,7 @@ export const countries = [
     year: 1304,
     latitude: 45.4064,
     longitude: 11.8768,
-    attributes: ["Renaissance", "Italian Renaissance"],
+    attributes: ["Proto-renaissance", "Renaissance", "Italian Renaissance"],
   },
   {
     code: "municip5091",

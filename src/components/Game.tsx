@@ -330,7 +330,7 @@ export function Game({ settingsData }: GameProps) {
                 rotationMode={rotationMode}
               />
             }
-          <AdUnit slot="1234567890" />
+          <AdUnit slot="3589348108" />
           </>
         ) : (
           <form onSubmit={handleSubmit}>

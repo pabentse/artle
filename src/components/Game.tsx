@@ -34,6 +34,7 @@ import { NextRound } from "./NextRound";
 import { ScoreProvider, useScore } from "./ScoreContext";
 import { MetaRoundProvider, useMetaRound } from "./MetaRoundContext";
 import { Guess, saveGuesses } from "../domain/guess";
+import { AdUnit } from "./AdUnit";
 
 function getDayStringNew() {
   return DateTime.now().toFormat("dd-MM-yyyy");
@@ -329,6 +330,7 @@ export function Game({ settingsData }: GameProps) {
                 rotationMode={rotationMode}
               />
             }
+          <AdUnit slot="1234567890" />
           </>
         ) : (
           <form onSubmit={handleSubmit}>

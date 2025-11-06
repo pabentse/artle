@@ -37,6 +37,7 @@ import { get } from "http";
 import { ScoreProvider, useScore } from "./ScoreContext";
 import { useMetaRound } from "./MetaRoundContext";
 import { useNavigate } from "react-router-dom";
+import { AdUnit } from "./AdUnit";
 
 function getDayString() {
   return DateTime.now().toFormat("yyyy-MM-dd");
@@ -419,6 +420,7 @@ export function GameThree({ settingsData }: GameProps) {
               hideImageMode={hideImageMode}
               rotationMode={rotationMode}
             />
+          <AdUnit slot="1234567890" />
           </>
         ) : null}
       </div>

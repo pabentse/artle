@@ -35,6 +35,7 @@ import { ScoreProvider, useScore } from "./ScoreContext";
 import { MetaRoundProvider, useMetaRound } from "./MetaRoundContext";
 import { Guess, saveGuesses } from "../domain/guess";
 import { AdUnit } from "./AdUnit";
+import { IntroNotice } from "./IntroNotice";
 
 function getDayStringNew() {
   return DateTime.now().toFormat("dd-MM-yyyy");
@@ -251,6 +252,7 @@ export function Game({ settingsData }: GameProps) {
 
   return (
     <div className="flex-grow flex flex-col mx-2">
+      <IntroNotice />
       <div className="flex flex-row justify-between">
         <GuessRow
           centuryFeedback={centuryFeedback}

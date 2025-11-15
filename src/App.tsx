@@ -10,7 +10,7 @@ import { Settings } from "./components/panels/Settings";
 import { useSettings } from "./hooks/useSettings";
 import { Stats } from "./components/panels/Stats";
 import { Worldle } from "./components/Worldle";
-import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Link, Route, Routes } from "react-router-dom";
 import { GameThree } from "./components/GameThree";
 import { ScoreProvider } from "./components/ScoreContext";
 import { MetaRoundProvider } from "./components/MetaRoundContext";
@@ -86,17 +86,33 @@ function App() {
                   <Route path="/privacy" element={<PrivacyPage />} />
                   <Route path="/terms" element={<TermsPage />} />
                 </Routes>
-                <footer className="flex justify-center text-sm mt-8 mb-1">
-                  <a>{""}</a>
-                </footer>
-                <footer className="flex justify-center text-sm mt-8 mb-1">
-                  <a>{"Image copyrights: Wiki Commons"}</a>
-                </footer>
-                <footer className="flex justify-center text-sm mt-8 mb-1">
-                  ❤️ <Worldle />? -
-                  <a className="underline pl-1" href="https://ko-fi.com/artle" target="_blank" rel="noopener noreferrer">
-                    {"Buy me a coffee!"}
-                  </a>
+                <footer className="flex flex-col items-center gap-2 text-sm mt-8 mb-4 px-3 text-center">
+                  <div className="flex flex-wrap justify-center gap-3">
+                    <Link className="underline" to="/about">
+                      About
+                    </Link>
+                    <Link className="underline" to="/privacy">
+                      Privacy
+                    </Link>
+                    <Link className="underline" to="/terms">
+                      Terms
+                    </Link>
+                    <a className="underline" href="mailto:hello@artle.eu">
+                      Contact
+                    </a>
+                  </div>
+                  <div>{"Image credits: Wikimedia Commons & museum open collections"}</div>
+                  <div>
+                    ❤️ <Worldle />? -
+                    <a
+                      className="underline pl-1"
+                      href="https://ko-fi.com/artle"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {"Buy me a coffee!"}
+                    </a>
+                  </div>
                 </footer>
               </div>
             </div>

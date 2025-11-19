@@ -91,6 +91,7 @@ export const countryCodesWithImage = [
   "municip5126",
   "municip5127",
   "municip5128",
+  "municip5129",
 ];
 
 export interface Country {
@@ -1205,6 +1206,18 @@ export const countries = [
     latitude: 41.9029,
     longitude: 12.4534,
     attributes: ["Abstract Art", "Modernism"],
+  },
+  {
+    code: "municip5129",
+    name: "Arearea",
+    artist: "Paul Gauguin",
+    location: "Paris",
+    country: "France",
+    museum: "Musée d'Orsay",
+    year: 1892,
+    latitude: 48.860294,
+    longitude: 2.338629,
+    attributes: ["Primitivism", "Impressionism", "Modernism"],
   },
 ];
 

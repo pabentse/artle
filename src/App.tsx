@@ -103,6 +103,17 @@ function App() {
                   </div>
                   <div>{"Image credits: Wikimedia Commons & museum open collections"}</div>
                   <div>
+                    {"Want to play more? Try "}
+                    <a
+                      className="underline font-semibold text-green-600"
+                      href="https://songcloud.eu"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {"SongCloud"}
+                    </a>
+                  </div>
+                  <div>
                     ❤️ <Worldle />? -
                     <a
                       className="underline pl-1"

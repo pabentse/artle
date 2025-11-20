@@ -299,6 +299,51 @@ export function GameThree({ settingsData }: GameProps) {
     guessedAttributes.length === 1 || //or
     guesses[guesses.length - 1]?.isCorrect === true;
 
+  useEffect(() => {
+    if (!roundOneEnded) {
+      return;
+    }
+
+    const storageKey = `songcloud-toast-${dayStringNew}`;
+    const alreadyShown = (() => {
+      try {
+        return window.localStorage.getItem(storageKey);
+      } catch {
+        return null;
+      }
+    })();
+
+    if (alreadyShown) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      toast.info(
+        <a
+          className="underline"
+          href="https://songcloud.eu"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Like music too? Try SongCloud
+        </a>,
+        {
+          autoClose: 6000,
+          closeOnClick: true,
+        }
+      );
+      try {
+        window.localStorage.setItem(storageKey, "shown");
+      } catch {
+        // ignore write failures
+      }
+    }, 5000);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [roundOneEnded, dayStringNew]);
+
   function shuffleArray(array: any[]): any[] {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));

@@ -38,6 +38,7 @@ import { ScoreProvider, useScore } from "./ScoreContext";
 import { useMetaRound } from "./MetaRoundContext";
 import { useNavigate } from "react-router-dom";
 import { AdUnit } from "./AdUnit";
+import { SongCloudBanner } from "./SongCloudBanner";
 
 function getDayString() {
   return DateTime.now().toFormat("yyyy-MM-dd");
@@ -404,6 +405,7 @@ export function GameThree({ settingsData }: GameProps) {
 
   return (
     <div className="flex-grow flex flex-col mx-2">
+      <SongCloudBanner />
       <div className="flex flex-row justify-between">
         <GuessRow settingsData={settingsData} />
       </div>

@@ -106,11 +106,11 @@ function App() {
                     {"Want to play more? Try "}
                     <a
                       className="underline font-semibold text-green-600"
-                      href="https://songcloud.eu"
+                      href="https://songle.eu"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {"SongCloud"}
+                      {"Songle"}
                     </a>
                   </div>
                   <div>

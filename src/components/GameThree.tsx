@@ -38,6 +38,7 @@ import { ScoreProvider, useScore } from "./ScoreContext";
 import { useMetaRound } from "./MetaRoundContext";
 import { useNavigate } from "react-router-dom";
 import { AdUnit } from "./AdUnit";
+import { KvissBanner } from "./KvissBanner";
 
 function getDayString() {
   return DateTime.now().toFormat("yyyy-MM-dd");
@@ -360,6 +361,7 @@ export function GameThree({ settingsData }: GameProps) {
 
   return (
     <div className="flex-grow flex flex-col mx-2">
+      <KvissBanner />
       <div className="flex flex-row justify-between">
         <GuessRow settingsData={settingsData} />
       </div>

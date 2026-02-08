@@ -35,6 +35,7 @@ import { ScoreProvider, useScore } from "./ScoreContext";
 import { MetaRoundProvider, useMetaRound } from "./MetaRoundContext";
 import { Guess, saveGuesses } from "../domain/guess";
 import { AdUnit } from "./AdUnit";
+import { KvissBanner } from "./KvissBanner";
 // import { IntroNotice } from "./IntroNotice";
 // import { DailySummary } from "./DailySummary";
 
@@ -255,6 +256,7 @@ export function Game({ settingsData }: GameProps) {
     <div className="flex-grow flex flex-col mx-2">
       {/* <DailySummary /> */}
       {/* <IntroNotice /> */}
+      <KvissBanner />
       <div className="flex flex-row justify-between">
         <GuessRow
           centuryFeedback={centuryFeedback}

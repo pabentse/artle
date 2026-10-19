@@ -214,7 +214,7 @@ export const countries = [
     location: "Florence",
     country: "Italy",
     museum: "Uffizi Gallery",
-    attributes: ["Renassiance"],
+    attributes: ["Renaissance"],
   },
   {
     code: "municip5049",
@@ -238,7 +238,7 @@ export const countries = [
     location: "Vatican City",
     country: "Italy",
     museum: "Sistine Chapel",
-    attributes: ["Renassiance"],
+    attributes: ["Renaissance"],
   },
   {
     code: "municip5051",
@@ -358,7 +358,7 @@ export const countries = [
     year: 1511,
     latitude: 41.9029,
     longitude: 12.4534,
-    attributes: ["Renassiance"],
+    attributes: ["Renaissance"],
   },
   {
     code: "municip5061",
@@ -370,7 +370,7 @@ export const countries = [
     year: 1499,
     latitude: 41.9029,
     longitude: 12.4534,
-    attributes: ["Renassiance"],
+    attributes: ["Renaissance"],
   },
   {
     code: "municip5062",
@@ -406,7 +406,7 @@ export const countries = [
     year: 1597,
     latitude: 41.9029,
     longitude: 12.4534,
-    attributes: ["Renassiance"],
+    attributes: ["Renaissance"],
   },
   {
     code: "municip5065",

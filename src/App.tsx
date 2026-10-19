@@ -51,9 +51,17 @@ function App() {
               bodyClassName="font-bold text-center"
             />
             {i18n.resolvedLanguage === "no" ? (
-              <InfosFr isOpen={infoOpen} close={() => setInfoOpen(false)} settingsData={settingsData} />
+              <InfosFr
+                isOpen={infoOpen}
+                close={() => setInfoOpen(false)}
+                settingsData={settingsData}
+              />
             ) : (
-              <Infos isOpen={infoOpen} close={() => setInfoOpen(false)} settingsData={settingsData} />
+              <Infos
+                isOpen={infoOpen}
+                close={() => setInfoOpen(false)}
+                settingsData={settingsData}
+              />
             )}
             <Settings
               isOpen={settingsOpen}
@@ -61,27 +69,52 @@ function App() {
               settingsData={settingsData}
               updateSettings={updateSettings}
             />
-            <Stats isOpen={statsOpen} close={() => setStatsOpen(false)} distanceUnit={settingsData.distanceUnit} />
+            <Stats
+              isOpen={statsOpen}
+              close={() => setStatsOpen(false)}
+              distanceUnit={settingsData.distanceUnit}
+            />
             <div className="flex justify-center flex-auto dark:bg-slate-900 dark:text-slate-50">
               <div className="w-full max-w-lg flex flex-col">
                 <header className="border-b-2 px-3 border-gray-200 flex">
-                  <button className="mr-3 text-xl" type="button" onClick={() => setInfoOpen(true)}>
+                  <button
+                    className="mr-3 text-xl"
+                    type="button"
+                    onClick={() => setInfoOpen(true)}
+                  >
                     ❓
                   </button>
                   <h1 className="text-4xl font-bold uppercase tracking-wide text-center my-1 flex-auto">
                     ART<span className="text-green-600">L</span>E
                   </h1>
-                  <button className="ml-3 text-xl" type="button" onClick={() => setStatsOpen(true)}>
+                  <button
+                    className="ml-3 text-xl"
+                    type="button"
+                    onClick={() => setStatsOpen(true)}
+                  >
                     📈
                   </button>
-                  <button className="ml-3 text-xl" type="button" onClick={() => setSettingsOpen(true)}>
+                  <button
+                    className="ml-3 text-xl"
+                    type="button"
+                    onClick={() => setSettingsOpen(true)}
+                  >
                     ⚙️
                   </button>
                 </header>
                 <Routes>
-                  <Route path="/" element={<Game settingsData={settingsData} />} />
-                  <Route path="/round2" element={<GameTwo settingsData={settingsData} />} />
-                  <Route path="/round3" element={<GameThree settingsData={settingsData} />} />
+                  <Route
+                    path="/"
+                    element={<Game settingsData={settingsData} />}
+                  />
+                  <Route
+                    path="/round2"
+                    element={<GameTwo settingsData={settingsData} />}
+                  />
+                  <Route
+                    path="/round3"
+                    element={<GameThree settingsData={settingsData} />}
+                  />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/privacy" element={<PrivacyPage />} />
                   <Route path="/terms" element={<TermsPage />} />
@@ -101,7 +134,11 @@ function App() {
                       Contact
                     </a>
                   </div>
-                  <div>{"Image credits: Wikimedia Commons & museum open collections"}</div>
+                  <div>
+                    {
+                      "Image credits: Wikimedia Commons & museum open collections"
+                    }
+                  </div>
                   <div>
                     ❤️ <Worldle />? -
                     <a

@@ -8,6 +8,7 @@ module.exports = {
     "react-app",
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:@typescript-eslint/recommended",
     "prettier",
   ],

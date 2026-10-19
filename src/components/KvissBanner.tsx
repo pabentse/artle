@@ -9,7 +9,9 @@ export function KvissBanner() {
         rel="noopener noreferrer"
         className="flex flex-col items-center gap-1 hover:scale-[1.02] transition-transform duration-200 w-full"
       >
-        <span className="text-xs text-white/80 tracking-[0.3em]">EXTRA! EXTRA!</span>
+        <span className="text-xs text-white/80 tracking-[0.3em]">
+          EXTRA! EXTRA!
+        </span>
         <span className="text-lg sm:text-xl">Try Kviss 🧠</span>
         <span className="text-xs text-white/90 normal-case">
           Tap for today&apos;s quiz →

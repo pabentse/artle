@@ -1102,7 +1102,12 @@ export const countries = [
     year: 1990,
     latitude: 35.6762,
     longitude: 139.6503,
-    attributes: ["Conceptual Art", "Feminist Art", "Contemporary Art", "Modernism"],
+    attributes: [
+      "Conceptual Art",
+      "Feminist Art",
+      "Contemporary Art",
+      "Modernism",
+    ],
   },
   //next is mao by andy warhol
   {
@@ -1221,7 +1226,9 @@ export const countries = [
   },
 ];
 
-export const countriesWithImage = countries.filter((c) => countryCodesWithImage.includes(c.code.toLowerCase()));
+export const countriesWithImage = countries.filter((c) =>
+  countryCodesWithImage.includes(c.code.toLowerCase())
+);
 
 export function getCountryName(language: string, country: Country) {
   return country.name;

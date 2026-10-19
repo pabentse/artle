@@ -1,8 +1,11 @@
 import { act } from "react-dom/test-utils";
 import { ReactNode } from "react";
-const { createRoot } = require("react-dom/client");
 import { AdUnit } from "./AdUnit";
 import { advertisingEnabled } from "../domain/advertising";
+
+// The app still uses React 17 types; the installed React 18 runtime provides createRoot.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { createRoot } = require("react-dom/client");
 
 jest.mock("../domain/advertising", () => ({ advertisingEnabled: jest.fn() }));
 const enabled = advertisingEnabled as jest.Mock;

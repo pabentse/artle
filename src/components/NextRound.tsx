@@ -2,7 +2,10 @@ import { DateTime, Interval } from "luxon";
 import { useMemo } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
-import { computeProximityPercent, generateSquareCharacters } from "../domain/geography";
+import {
+  computeProximityPercent,
+  generateSquareCharacters,
+} from "../domain/geography";
 import { Guess } from "../domain/guess";
 import React from "react";
 import { SettingsData } from "../hooks/useSettings";
@@ -14,7 +17,13 @@ const START_DATE = DateTime.fromISO("2023-02-24");
 
 type NextRoundProps = ShareProps;
 
-export function NextRound({ guesses, dayString, settingsData, hideImageMode, rotationMode }: NextRoundProps) {
+export function NextRound({
+  guesses,
+  dayString,
+  settingsData,
+  hideImageMode,
+  rotationMode,
+}: NextRoundProps) {
   const { theme } = settingsData;
 
   const { currentMetaRound, setCurrentMetaRound } = useMetaRound();
@@ -23,10 +32,17 @@ export function NextRound({ guesses, dayString, settingsData, hideImageMode, rot
   let buttonText = "Go to round 2!";
 
   const nextRoundText = useMemo(() => {
-    const guessCount = guesses[guesses.length - 1]?.distance === 0 ? guesses.length : "X";
+    const guessCount =
+      guesses[guesses.length - 1]?.distance === 0 ? guesses.length : "X";
     const parsedDay = DateTime.fromFormat(dayString, "dd-MM-yyyy");
-    const dayCount = Math.floor(Interval.fromDateTimes(START_DATE, parsedDay).length("day"));
-    const difficultyModifierEmoji = hideImageMode ? " " : rotationMode ? " " : "";
+    const dayCount = Math.floor(
+      Interval.fromDateTimes(START_DATE, parsedDay).length("day")
+    );
+    const difficultyModifierEmoji = hideImageMode
+      ? " "
+      : rotationMode
+      ? " "
+      : "";
     const title = `#Artle #${dayCount} ${guessCount}/6${difficultyModifierEmoji}`;
 
     const guessString = guesses

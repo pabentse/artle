@@ -70,7 +70,8 @@ function CompletedGameAd() {
         if (cancelled || requested.current) return;
         requested.current = true;
         try {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
+          (window.adsbygoogle =
+            window.adsbygoogle || ([] as Record<string, unknown>[])).push({});
         } catch {
           setFailed(true);
         }

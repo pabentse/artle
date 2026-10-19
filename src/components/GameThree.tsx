@@ -300,7 +300,6 @@ export function GameThree({ settingsData }: GameProps) {
     guessedAttributes.length === 1 || //or
     guesses[guesses.length - 1]?.isCorrect === true;
 
-
   function shuffleArray(array: any[]): any[] {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -330,7 +329,9 @@ export function GameThree({ settingsData }: GameProps) {
         `round3_attributes_${dayStringNew}`,
         JSON.stringify(next)
       );
-    } catch {}
+    } catch {
+      // Storage may be unavailable; keep the result in memory for this visit.
+    }
 
     setcurrentRoundInThree(currentRoundInThree - 1);
   };

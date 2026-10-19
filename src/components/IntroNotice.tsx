@@ -49,7 +49,7 @@ export function IntroNotice() {
           </p>
           <p className="text-xs text-slate-600 dark:text-slate-300">
             Want the backstory? Visit <a className="underline" href="#/about">About</a>. Curious how
-            we handle data? Read the <a className="underline" href="#/privacy">Privacy Policy</a>{" "}
+            we handle data? Read the <a className="underline" href="/privacy.html">Privacy Policy</a>{" "}
             and <a className="underline" href="#/terms">Terms</a>.
           </p>
         </div>

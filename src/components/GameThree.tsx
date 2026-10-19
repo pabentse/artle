@@ -423,7 +423,7 @@ export function GameThree({ settingsData }: GameProps) {
               hideImageMode={hideImageMode}
               rotationMode={rotationMode}
             />
-          <AdUnit slot="3589348108" />
+            <AdUnit />
           </>
         ) : null}
       </div>

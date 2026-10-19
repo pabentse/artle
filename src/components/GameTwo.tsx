@@ -27,7 +27,6 @@ import { NextRound } from "./NextRound";
 import { ScoreProvider, useScore } from "./ScoreContext";
 import { useMetaRound } from "./MetaRoundContext";
 import { useNavigate } from "react-router-dom";
-import { AdUnit } from "./AdUnit";
 import { KvissBanner } from "./KvissBanner";
 
 function getDayStringNew() {
@@ -369,7 +368,6 @@ export function GameTwo({ settingsData }: GameProps) {
             hideImageMode={hideImageMode}
             rotationMode={rotationMode}
           />
-          <AdUnit slot="3589348108" />
         </>
       )}
     </div>

@@ -35,3 +35,19 @@ code {
   transform: translate(-50%, -50%);
   /* Add other styles for the confetti container if needed */
 }
+
+.completed-game-ad {
+  margin: 32px auto 0;
+  width: 320px;
+  max-width: 100%;
+  text-align: center;
+}
+.completed-game-ad__label {
+  display: block;
+  margin-bottom: 6px;
+  color: #64748b;
+  font-size: 10px;
+}
+@media (max-width: 359px) {
+  .completed-game-ad { display: none; }
+}

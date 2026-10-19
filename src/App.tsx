@@ -91,9 +91,9 @@ function App() {
                     <Link className="underline" to="/about">
                       About
                     </Link>
-                    <Link className="underline" to="/privacy">
+                    <a className="underline" href="/privacy.html">
                       Privacy
-                    </Link>
+                    </a>
                     <Link className="underline" to="/terms">
                       Terms
                     </Link>

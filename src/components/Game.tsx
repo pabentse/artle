@@ -34,7 +34,6 @@ import { NextRound } from "./NextRound";
 import { ScoreProvider, useScore } from "./ScoreContext";
 import { MetaRoundProvider, useMetaRound } from "./MetaRoundContext";
 import { Guess, saveGuesses } from "../domain/guess";
-import { AdUnit } from "./AdUnit";
 import { KvissBanner } from "./KvissBanner";
 // import { IntroNotice } from "./IntroNotice";
 // import { DailySummary } from "./DailySummary";
@@ -336,7 +335,6 @@ export function Game({ settingsData }: GameProps) {
                 rotationMode={rotationMode}
               />
             }
-          <AdUnit slot="3589348108" />
           </>
         ) : (
           <form onSubmit={handleSubmit}>

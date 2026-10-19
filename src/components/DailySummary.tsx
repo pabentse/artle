@@ -21,9 +21,9 @@ export function DailySummary() {
           Read the story behind Artle
         </Link>{" "}
         or review our{" "}
-        <Link className="underline" to="/privacy">
+        <a className="underline" href="/privacy.html">
           privacy policy
-        </Link>
+        </a>
         .
       </p>
     </section>

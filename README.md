@@ -52,3 +52,23 @@ with Google's internal “Could not find event bus in current window context”
 error. Its overview reports two active messages, but their site assignments and
 settings could not be inspected. No consent configuration was published or
 accepted as verified, and no binding terms were accepted. Serving stays OFF.
+
+### Release status (19 October 2026)
+
+Source `0f95567` passed a production build and five focused tests. ESLint has zero
+errors (existing warnings remain), and a Chrome smoke test completed all three
+rounds without an AdSense loader or ad unit. The legacy privacy hash route also
+redirects correctly. The earlier Renaissance spelling fix is included.
+
+The generated release is committed as `ff0dfcd` on `gh-pages`:
+https://github.com/pabentse/artle/actions/runs/39286013367
+At the last check the Pages deployment was still queued during GitHub's reported
+Actions/Pages service degradation, and artle.eu still served the old bundle.
+The new privacy page and verification meta tag are therefore **not yet verified
+live**. Do not confuse pushing `gh-pages` with a completed deployment.
+
+Artle's Google review has **not been requested** for this release. Once Pages
+finishes, verify `/privacy.html`, `/ads.txt`, the account meta tag, and absence of
+the global AdSense loader on the live site, then request review using the meta-tag
+verification option. Approval and the blocked consent setup are still required
+before enabling ad serving.

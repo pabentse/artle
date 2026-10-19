@@ -60,15 +60,19 @@ errors (existing warnings remain), and a Chrome smoke test completed all three
 rounds without an AdSense loader or ad unit. The legacy privacy hash route also
 redirects correctly. The earlier Renaissance spelling fix is included.
 
-The generated release is committed as `ff0dfcd` on `gh-pages`:
+The generated release `ff0dfcd` on `gh-pages` is deployed successfully:
 https://github.com/pabentse/artle/actions/runs/39286013367
-At the last check the Pages deployment was still queued during GitHub's reported
-Actions/Pages service degradation, and artle.eu still served the old bundle.
-The new privacy page and verification meta tag are therefore **not yet verified
-live**. Do not confuse pushing `gh-pages` with a completed deployment.
+The GitHub Pages delay has cleared. The live site serves bundle
+`main.bafd7dd5.js`, the account verification meta tag, `/privacy.html` and
+`/ads.txt`. The global AdSense loader is absent.
 
-Artle's Google review has **not been requested** for this release. Once Pages
-finishes, verify `/privacy.html`, `/ads.txt`, the account meta tag, and absence of
-the global AdSense loader on the live site, then request review using the meta-tag
-verification option. Approval and the blocked consent setup are still required
-before enabling ad serving.
+Artle's review request was submitted in Chrome after confirming the release was
+live, using the meta-tag verification option. Google now shows ownership verified
+and “Klargjøres” / “Venter på gjennomgang” (preparing / awaiting review). The
+expanded panel retains an older June request timestamp even though the review
+button was submitted again during this setup. Approval has not been granted.
+
+Ad serving remains disabled. The European consent editor is still blocked by the
+Google dashboard error described above; publish/integrate and test consent,
+including reopening and withdrawal, before activation. No binding terms were
+accepted as part of this setup.

@@ -76,3 +76,20 @@ Ad serving remains disabled. The European consent editor is still blocked by the
 Google dashboard error described above; publish/integrate and test consent,
 including reopening and withdrawal, before activation. No binding terms were
 accepted as part of this setup.
+
+## Daily artwork rotation
+
+From 27 October 2026, `src/domain/dailyArtwork.ts` deals a deterministic shuffled
+89-artwork deck. The first card is the existing 27 October puzzle, *Isle of the
+Dead*, so the new selections begin on 28 October. Every artwork appears exactly
+once per deck. A 30-day exclusion window prevents close repeats across deck
+boundaries and includes the final month of the previous schedule at migration.
+The seeded order is shared by all players and does not depend on local storage.
+Calendar dates, including those across daylight-saving changes, advance one card.
+Earlier dates retain the legacy monthly selection and its historical overrides.
+
+`DECK_CODES`, the start date, and the seed version freeze this schedule. To add or
+remove artworks, introduce a new dated schedule version rather than editing this
+manifest or deleting referenced catalogue entries; otherwise existing puzzles
+could change. Tests cover full-deck coverage, repeat spacing, the migration day,
+and deterministic selection in fresh sessions and out-of-order date lookups.
